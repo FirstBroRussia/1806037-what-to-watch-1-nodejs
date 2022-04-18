@@ -1,7 +1,7 @@
 # Личный проект «Что посмотреть»
 
 * Студент: [Евгений Архипкин](https://up.htmlacademy.ru/nodejs-api/1/user/1806037).
-* Наставник: `[Евгений Сальников](https://htmlacademy.ru/profile/id24537)`.
+* Наставник: [Евгений Сальников](https://htmlacademy.ru/profile/id24537).
 
 ---
 
