@@ -22,12 +22,7 @@ export default class TSVFileReader implements FileReaderInterface {
     return this.rawData
       .split('\n')
       .filter((row) => row.trim() !== '')
-      .map((line) => {
-        console.log(line);
-        const aaa = line.split('\t');
-        console.log(aaa);
-        return aaa;
-      })
+      .map((line) => line.split('\t'))
       .map(([title, description, publicationDate, genre, releasedYear, rating, previewVideoLink, videoLink, actors, director, duration, commentsCount, user, poster, backgroundImage, backgroundColor]) => (
         {
           title,
