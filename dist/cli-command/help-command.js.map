@@ -1,0 +1,1 @@
+{"version":3,"file":"help-command.js","sourceRoot":"","sources":["../../src/cli-command/help-command.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAG1B,MAAM,CAAC,OAAO,OAAO,WAAW;IAAhC;QACiB,SAAI,GAAG,QAAQ,CAAC;IAgBjC,CAAC;IAdO,KAAK,CAAC,OAAO;QACnB,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,MAAM,CAAC;;;;;;;;;;;GAWxB,CAAC,CAAC,CAAC;IACL,CAAC;CACD"}

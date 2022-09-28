@@ -1,5 +1,4 @@
-// eslint-disable-next-line node/no-unsupported-features/es-syntax
-export interface CliCommandInterface {
+export interface CLICommandInterface {
   readonly name: string;
   execute(...parameters: string[]): void;
 }

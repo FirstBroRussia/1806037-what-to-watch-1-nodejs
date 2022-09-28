@@ -1,48 +1,36 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
-import { readFileSync } from 'fs';
-import { FilmType } from 'src/types/film.type.js';
-import { GenresType } from 'src/types/genres.type.js';
-import { FileReaderInterface } from './file-reader.interface.js';
+import EventEmitter from "events";
+import { createReadStream } from "fs";
+import { FileReaderInterface } from "./file-reader.interface";
 
-export default class TSVFileReader implements FileReaderInterface {
-  private rawData = '';
 
-  constructor(public filename: string) { }
+export default class TSVFileReader extends EventEmitter implements FileReaderInterface {
+	constructor(public filename: string) {
+		super();
+	}
 
-  public read(): void {
-    this.rawData = readFileSync(this.filename, {encoding: 'utf-8'});
+	public async read(): Promise<void> {
+		const stream = createReadStream(this.filename, {
+			highWaterMark: 16384,
+			encoding: 'utf-8',
+		});
 
-  }
+		let lineRead = '';
+		let endLinePosition = -1;
+		let importedRowCount = 0;
 
-  public toArray(): FilmType[] {
-    if (!this.rawData) {
-      return [];
-    }
+		for await (const chunk of stream) {
+			lineRead += chunk.toString();
 
-    return this.rawData
-      .split('\n')
-      .filter((row) => row.trim() !== '')
-      .map((line) => line.split('\t'))
-      .map(([title, description, publicationDate, genre, releasedYear, rating, previewVideoLink, videoLink, actors, director, duration, commentsCount, user, poster, backgroundImage, backgroundColor]) => (
-        {
-          title,
-          description,
-          publicationDate: new Date(publicationDate),
-          genre: genre as GenresType,
-          releasedYear: Number(releasedYear),
-          rating: Number(rating),
-          previewVideoLink,
-          videoLink,
-          actors,
-          director,
-          duration: Number(duration),
-          commentsCount: Number(commentsCount),
-          user,
-          poster,
-          backgroundImage,
-          backgroundColor
-        }
-      ));
-  }
+			while ((endLinePosition = lineRead.indexOf('\n')) >= 0) {
+				const completeRow = lineRead.slice(0, endLinePosition + 1);
+				lineRead = lineRead.slice(++endLinePosition);
+				importedRowCount++;
+
+				this.emit('line', completeRow);
+			}
+		}
+
+		this.emit('end', importedRowCount);
+	};
 
 }

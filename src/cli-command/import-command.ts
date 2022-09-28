@@ -1,25 +1,28 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
-import chalk from 'chalk';
 import TSVFileReader from '../common/file-reader/tsv-file-reader.js';
-import { CliCommandInterface } from './cli-command.interface.js';
+import { createFilmItem, getErrorMessage } from '../utils/common.js';
+import {CLICommandInterface} from './cli-command.interface.js';
 
-class ImportCommand implements CliCommandInterface {
-  public readonly name = '--import';
-  public execute(filename: string): void {
-    const fileReader = new TSVFileReader(filename.trim());
+export default class ImportCommand implements CLICommandInterface {
+	public readonly name = '--import';
 
-    try {
-      fileReader.read();
-      console.log(fileReader.toArray());
-    } catch (err) {
+	private onLine(line: string) {
+		const film = createFilmItem(line);
+		console.log(film);
+	}
 
-      if (!(err instanceof Error)) {
-        throw err;
-      }
+	private onComplete(count: number) {
+		console.log(`${count} rows imported.`);
+	}
 
-      console.log(chalk.red(`Не удалось импортировать данные из файла по причине: «${err.message}»`));
-    }
-  }
+	public async execute(filename: string): Promise<void> {
+		const fileReader = new TSVFileReader(filename.trim());
+		fileReader.on('line', this.onLine);
+		fileReader.on('end', this.onComplete);
+
+		try {
+			await fileReader.read();
+		} catch (err) {
+			console.log(`Can't read the file: ${getErrorMessage(err)}`);
+		}
+	}
 }
-
-export default ImportCommand;

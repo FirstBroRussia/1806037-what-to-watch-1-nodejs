@@ -1,0 +1,19 @@
+{
+	"configurations": [
+	{
+		"name": "ts-node debug",
+		"type": "node",
+		"request": "launch",
+		"skipFiles": [
+			"<node_internals>/**",
+			"<node_modules>/**"
+		],
+		"runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ts-node",
+		"cwd": "${workspaceFolder}",
+		"args": ["${relativeFile}"],
+		"protocol": "inspector",
+		"console": "integratedTerminal",
+		"internalConsoleOptions": "neverOpen"
+	}
+	]
+}

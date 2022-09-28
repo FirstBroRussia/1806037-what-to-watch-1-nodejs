@@ -18,7 +18,6 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "baseUrl": ".",
     "outDir": "./dist",
     "emitDecoratorMetadata": true,
     "types": [

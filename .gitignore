@@ -1,11 +1,6 @@
-.vscode/
+.history/
 /node_modules/
-/build/
-/lib/
-/dist/
-/docs/
-.idea/*
+/mongodb/
 
-.DS_Store
-coverage
+*.env
 *.log
