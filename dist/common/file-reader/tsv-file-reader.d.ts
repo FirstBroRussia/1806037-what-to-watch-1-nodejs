@@ -1,9 +1,8 @@
-import { Film } from "../../types/film.type";
+/// <reference types="node" />
+import EventEmitter from "events";
 import { FileReaderInterface } from "./file-reader.interface";
-export default class TSVFileReader implements FileReaderInterface {
+export default class TSVFileReader extends EventEmitter implements FileReaderInterface {
     filename: string;
-    private rawData;
     constructor(filename: string);
-    read(): void;
-    toArray(): Film[];
+    read(): Promise<void>;
 }

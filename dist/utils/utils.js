@@ -1,12 +1,2 @@
-export const GenresList = {
-    Comedy: 'comedy',
-    Crime: 'crime',
-    Documentary: 'documentary',
-    Drama: 'drama',
-    Horror: 'horror',
-    Family: 'family',
-    Romance: 'romance',
-    SciFi: 'scifi',
-    Thriller: 'thriller'
-};
+"use strict";
 //# sourceMappingURL=utils.js.map

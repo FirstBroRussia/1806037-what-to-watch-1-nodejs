@@ -1,4 +1,4 @@
-export declare enum Genres {
+export declare enum GenreType {
     Comedy = "comedy",
     Crime = "crime",
     Documentary = "documentary",
