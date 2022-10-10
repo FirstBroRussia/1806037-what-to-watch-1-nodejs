@@ -1,9 +1,9 @@
-import { Genre } from "./types";
+import { GenreType } from "./genre.type.js";
 export declare type Film = {
     title: string;
     description: string;
     postData: Date;
-    genre: Genre;
+    genre: GenreType;
     releaseYear: number;
     rating: number;
     previewVideo: string;

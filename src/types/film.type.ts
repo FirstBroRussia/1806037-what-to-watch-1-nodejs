@@ -1,8 +1,10 @@
-export type FilmType = {
+import { GenreType } from "./genre.type.js";
+
+export type Film = {
 	title: string,
 	description: string,
 	postData: Date,
-	genre: string,
+	genre: GenreType,
 	releaseYear: number,   // МОЖЕТ БЫТЬ ТИП Date
 	rating: number,
 	previewVideo: string,   // Может быть тип данных что то по типу URL
