@@ -17,7 +17,8 @@
     "ts": "ts-node",
     "mock_server": "json-server ./mocks/mock-server-data.json --port 3123",
     "start_dev": "npm run ts ./src/main.ts | pino-pretty --colorize --translateTime SYS:standard",
-    "debug": "ts-node ./src/cli.ts"
+    "debug": "ts-node ./src/cli.ts",
+    "nodemon": "nodemon"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
