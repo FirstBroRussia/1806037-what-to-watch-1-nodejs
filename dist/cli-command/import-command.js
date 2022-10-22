@@ -27,7 +27,7 @@ export default class ImportCommand {
             name: filmResult.genre,
         };
         await this.genreService.findByGenreNameAndUpdateFilmsIdOrCreateGenre(filmResult.genre, createGenreDTO, filmResult._id);
-        console.log(`New genre created and update filmsID array`);
+        // console.log(`New genre created and update filmsID array`);
     }
     async onLine(line, resolve) {
         const film = createFilmItem(line);
@@ -36,8 +36,8 @@ export default class ImportCommand {
     }
     async onComplete(count) {
         console.log(`${count} rows imported.`);
-        const result = await this.filmService.findByGenreName('documentary');
-        console.log(result);
+        // const result = await this.filmService.findByGenreName('documentary');
+        // console.log(result);
         await this.databaseService.disconnect();
     }
     // filename: string, login: string, password: string, host: string, dbname: string, salt: string
