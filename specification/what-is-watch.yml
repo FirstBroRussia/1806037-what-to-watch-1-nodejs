@@ -27,17 +27,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#'
+              $ref: '#/components/schemas/CreateFilm'
       responses:
         '201':
           description: Новый фильм
           content:
             application/json:
               schema:
-                $ref: '#'
+                $ref: '#/components/schemas/Film'
         '400':
           description: Ошибка тела запроса
-          content: {}
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectRequestBodyError'
         '401':
           description: Необходима авторизация для данного действия
           content: {}
@@ -64,7 +67,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#'
+                  $ref: '#/components/schemas/FilmInfo'
   /films[?genre={genre}&сount={count}]:
     get:
       tags:
@@ -73,6 +76,13 @@ paths:
       description: Сервис предоставляет возможность получить список фильмов не более чем из 60 штук определенного жанра по переданному параметру {genre}, если указан параметр {count}, тогда получаем список с указанными количеством в параметре,  Список отсортирован по дате публикации (по убыванию) Ресурс доступен любому пользователю.
       operationId: getFilmsByGenre
       parameters:
+        - name: genre
+          in: path
+          description: Жанр запрашиваемых фильмов
+          required: true
+          schema:
+            type: string
+            example: thriller
         - name: сount
           in: path
           description: Количество запрашиваемых фильмов
@@ -80,13 +90,6 @@ paths:
           schema: 
             type: string
             example: 30
-        - name: genre
-          in: path
-          description: Жанр запрашиваемых фильмов
-          required: true
-          schema:
-           type: string
-           example: thriller
       responses:
         '200':
           description: Массив из объектов фильмов
@@ -95,7 +98,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#'
+                  $ref: '#/components/schemas/FilmInfo'
   /films/promo:
     get:
       tags:
@@ -109,7 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#'
+                $ref: '#/components/schemas/Film'
   /films[/:{filmId}]:
     put:
       tags:
@@ -124,28 +127,27 @@ paths:
           description: Уникальный идентификатор фильма
           required: true
           schema:
-            type: string
-            example: 507f1f77bcf86cd799439011
+            $ref: '#/components/schemas/FilmId'
       requestBody:
         description: Объект с обновленными данными фильма
         required: true
         content:
           application/json:
             schema:
-              $ref: '#'
+              $ref: '#/components/schemas/CreateFilm'
       responses: 
         '201':
           description: Обновленный объект фильма
           content:
             application/json:
               schema:
-                $ref: '#'
+                $ref: '#/components/schemas/Film'
         '400':
           description: Ошибка тела запроса
           content:
             application/json:
               schema:
-                $ref: '#' # ЗДЕСЬ НАДО СДЕЛАТЬ СХЕМУ КОТОРАЯ УКАЖЕТ НЕКОРРЕКТНОСТЬ ДАННЫХ И ЧТО ИМЕННО НЕ ТАК
+                $ref: '#/components/schemas/ObjectRequestBodyError'
         '401':
           description: Необходима авторизация для данного действия
           content: {}
@@ -192,7 +194,7 @@ paths:
               schema:
                 type: array
                 items: 
-                  $ref: '#'
+                  $ref: '#/components/schemas/FilmInfo'
         "401":
           description: Пользователь не авторизован
           content: {}
@@ -209,14 +211,14 @@ paths:
           description: Уникальный идентификатор фильма
           required: true
           schema:
-            $ref: '#'
+            $ref: '#/components/schemas/FilmId'
       responses:
         '201':
           description: Объект фильма
           content:
             application/json:
               schema:
-                $ref: '#'
+                $ref: '#/components/schemas/Film'
         "401":
           description: Пользователь не авторизован
           content: {}
@@ -232,7 +234,7 @@ paths:
           description: Уникальный идентификатор фильма
           required: true
           schema:
-            $ref: '#'
+            $ref: '#/components/schemas/FilmId'
       responses:
         "204":
           description: Фильм удален
@@ -257,7 +259,7 @@ paths:
           description: Уникальный идентификатор фильма
           required: true
           schema:
-            $ref: '#'
+            $ref: '#/components/schemas/FilmId'
       responses:
         '200':
           description: Массив объектов комментариев
@@ -266,7 +268,7 @@ paths:
               schema:
                 type: array
                 items: 
-                  $ref: '#'
+                  $ref: '#/components/schemas/Comment'
         "404":
           description: Комментарии не найдены
           content: {}
@@ -282,27 +284,27 @@ paths:
           description: Уникальный идентификатор фильма
           required: true
           schema:
-            $ref: '#'
+            $ref: '#/components/schemas/FilmId'
       requestBody:
         description: Объект с данными комментария
         required: true
         content:
           application/json:
             schema:
-              $ref: '#'
+              $ref: '#/components/schemas/CreateComment'
       responses:
         '201':
           description: Объект с данным комментарием
           content:
             application/json:
               schema:
-                $ref: '#'
+                $ref: '#/components/schemas/Comment'
         '400':
           description: Ошибка тела запроса
           content:
             application/json:
               schema:
-                $ref: '#' # ЗДЕСЬ НАДО СДЕЛАТЬ СХЕМУ КОТОРАЯ УКАЖЕТ НЕКОРРЕКТНОСТЬ ДАННЫХ И ЧТО ИМЕННО НЕ ТАК
+                $ref: '#/components/schemas/ObjectRequestBodyError'
         '401':
           description: Необходима авторизация для данного действия
           content: {}
@@ -323,17 +325,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#'
+              $ref: '#/components/schemas/CreateUser'
       responses:
         '201':
           description: Объект с данными о созданном пользователе
           content:
             application/json:
               schema:
-                $ref: '#'
+                $ref: '#/components/schemas/User'
         '400':
           description: Ошибка тела запроса
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectRequestBodyError'
         '409':
           description: Пользователь с таким email существует
           content: {}
@@ -351,17 +356,20 @@ paths:
         content:
           application/json:
             schema: 
-              $ref: '#'
+              $ref: '#/components/schemas/Authorization'
       responses:
         "200":
           description: Статус авторизации
           content:
             application/json:
               schema:
-                $ref: "#"
+                $ref: "#/components/schemas/Token"
         "400":
           description: Ошибка тела запроса
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectRequestBodyError'
         "401":
           description: Неверный логин или пароль
           content: {}
@@ -377,14 +385,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#"
+              $ref: "#/components/schemas/Token"
       responses:
         "200":
           description: Статус авторизации
-          content:
-            application/json:
-              schema:
-                $ref: "#"
+          content: {}
         "401":
           description: Пользователь не авторизован
           content: {}
@@ -402,7 +407,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#"
+              $ref: "#/components/schemas/Token"
       responses:
         "204":
           description: Сеанс завершен
@@ -410,5 +415,202 @@ paths:
         "401":
           description: Пользователь не авторизован
           content: {}
+
+
+components:
+  schemas:
+    Genre:
+      type: string
+      enum:
+        - comedy
+        - crime
+        - documentary
+        - drama
+        - horror
+        - family
+        - romance
+        - sci-fi
+        - thriller
+      example: drama
+
+    Rating:
+      type: string
+      format: float
+      example: 9.1
+
+    Date:
+      type: string
+      example: 2021-12-12T21:55:28.147Z
+
+    CreateFilm:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Зеленая миля
+        description:
+          type: string
+          example: Пол Эджкомб — начальник блока смертников в тюрьме «Холодная гора», каждый из узников которого однажды проходит «зеленую милю» по пути к месту казни.
+        postDate:
+          $ref: "#/components/schemas/Date"
+        genre:
+          $ref: "#/components/schemas/Genre"
+        releaseYear:
+          type: string
+          example: 1994
+        rating:
+          $ref: "#/components/schemas/Rating"
+        previewVideo:
+          type: string
+          example: https://{url}/static/films/film/preview.mp4
+        video:
+          type: string
+          example: https://{url}/static/films/film/video.mp4
+        actors:
+          type: array
+          items:
+            type: string
+          example: [Том Хэнкс, Дэвид Морс, Бонни Хант]
+        director:
+          type: string
+          example: Фрэнк Дарабонт
+        duration:
+          type: number
+          example: 120
+        poster:
+          type: string
+          example: https://{url}/static/img/film-poster.jpeg
+        backgroundImage:
+          type: string
+          example: https://{url}/static/img/film-background.jpeg
+        backgroundColor:
+          type: string
+          example: ffffff
+
+        # USER_ID НАДО ДОРАБОТАТЬ   ???
+
+    Film:
+      allOf:
+        - type: object
+          properties:
+            # id:
+            #   type: string
+            #   example: 507f1f77bcf86cd799439011
+            commentCount:
+              type: integer
+              format: int32
+              example: 5
+            userUrl:
+              type: string
+              example: '#' # ССЫЛКУ ПРИМЕР ДОБАВИТЬ!!!
+        - $ref: "#/components/schemas/CreateFilm"
+
+    FilmInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 507f1f77bcf86cd799439011
+        title:
+          type: string
+          example: Зеленая миля
+        publicationDate:
+          type: string
+          example: 2021-12-12T21:55:28.147Z
+        genre:
+          $ref: "#/components/schemas/Genre"
+        previewVideo:
+          type: string
+          example: https://{url}/static/films/film/preview.mp4
+        poster:
+          type: string
+          example: https://{url}/static/img/film-poster.jpeg
+
+        # USER_ID НАДО ДОРАБОТАТЬ   ???
+
+    CreateComment:
+      type: object
+      properties:
+        comment:
+          type: string
+          example: Фильм, который я могу смело назвать шедевром. Фильм, который...
+        rating:
+          $ref: "#/components/schemas/Rating"
+
+    Comment:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              example: 507f1f77bcf86cd799439011
+            date:
+              $ref: "#/components/schemas/Date"
+            user:
+              $ref: "#/components/schemas/User"
+        - $ref: "#/components/schemas/CreateComment"
+
+    CreateUser:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          example: John.doe@gmail.com
+        avatar:
+          type: string
+          example: https://{url}/static/avatar/1.jpg
+
+    User:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              example: 2dd9c
+        - $ref: "#/components/schemas/CreateUser"
+
+    RegisterUser:
+      allOf:
+        - $ref: "#/components/schemas/CreateUser"
+        - type: object
+          properties:
+            password:
+              type: string
+              example: password
+
+    Authorization:
+      type: object
+      properties:
+        email:
+          type: string
+          example: John.doe@gmail.com
+        password:
+          type: string
+          example: password
+
+    AuthorizationInfo:
+      allOf:
+        - $ref: "#/components/schemas/User"
+        - type: object
+          properties:
+            token:
+              $ref: '#/components/schemas/Token'
+
+    Token:
+      type: string
+      example: T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=
+
+    FilmId:
+      type: string
+      example: 507f1f77bcf86cd799439011
+
+    ObjectRequestBodyError:
+      type: string
+      example: У вас заполнены некорректно следующие поля - {тут происходит перечисление полей}
+
+    
     
       
