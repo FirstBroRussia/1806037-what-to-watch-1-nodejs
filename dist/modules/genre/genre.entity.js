@@ -25,7 +25,7 @@ __decorate([
         ref: GenreEntity_1,
     }),
     __metadata("design:type", Array)
-], GenreEntity.prototype, "filmsId", void 0);
+], GenreEntity.prototype, "filmsList", void 0);
 GenreEntity = GenreEntity_1 = __decorate([
     modelOptions({
         schemaOptions: {

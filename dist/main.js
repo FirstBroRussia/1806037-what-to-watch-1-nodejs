@@ -2,7 +2,10 @@
 import { Container } from "inversify";
 import Application from "./app/application.js";
 import ConfigService from "./common/config/config.service.js";
+import FilmController from "./common/controllers/film-controller/film.controller.js";
+import UserController from "./common/controllers/user-controller/user.controller.js";
 import DatabaseService from "./common/database-client/database.service.js";
+import ExceptionFilter from "./common/errors/exception-filter.js";
 import LoggerService from "./common/logger/logger.service.js";
 import { FilmModel } from "./modules/film/film.entity.js";
 import FilmService from "./modules/film/film.service.js";
@@ -22,6 +25,9 @@ applicationContainer.bind(Component.GenreModel).toConstantValue(GenreModel);
 applicationContainer.bind(Component.GenreServiceInterface).to(GenreService).inSingletonScope();
 applicationContainer.bind(Component.FilmServiceInterface).to(FilmService).inSingletonScope();
 applicationContainer.bind(Component.FilmModel).toConstantValue(FilmModel);
+applicationContainer.bind(Component.FilmController).to(FilmController).inSingletonScope();
+applicationContainer.bind(Component.UserController).to(UserController).inSingletonScope();
+applicationContainer.bind(Component.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
 const application = applicationContainer.get(Component.Application);
 await application.init();
 //# sourceMappingURL=main.js.map

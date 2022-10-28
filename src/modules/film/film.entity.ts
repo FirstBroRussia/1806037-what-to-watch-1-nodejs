@@ -21,7 +21,7 @@ export class FilmEntity extends TimeStamps implements Film {
     public description!: string;
     
     @prop({required: true})
-    public postData!: Date;
+    public postDate!: Date;
     
     @prop({
         required: true,
@@ -75,11 +75,11 @@ export class FilmEntity extends TimeStamps implements Film {
     constructor(data: Film) {
         super();
 
-        const {title, description, postData, genre, releaseYear, rating, previewVideo, video, actors, director, duration, commentsCount, userUrl, poster, backgroundImage, backgroundColor} = data;
+        const {title, description, postDate, genre, releaseYear, rating, previewVideo, video, actors, director, duration, commentsCount, userUrl, poster, backgroundImage, backgroundColor} = data;
         
         this.title = title;
         this.description = description;
-        this.postData = postData;
+        this.postDate = postDate;
         this.genre = genre;
         this.releaseYear = releaseYear;
         this.rating = rating;

@@ -9,4 +9,7 @@ export declare const Component: {
     readonly FilmModel: symbol;
     readonly GenreServiceInterface: symbol;
     readonly GenreModel: symbol;
+    readonly FilmController: symbol;
+    readonly UserController: symbol;
+    readonly ExceptionFilterInterface: symbol;
 };

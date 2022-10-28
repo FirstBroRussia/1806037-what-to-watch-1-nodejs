@@ -15,8 +15,19 @@ let FilmService = class FilmService {
     async findById(filmId) {
         return await this.filmModel.findById(filmId).exec();
     }
-    async findByGenreName(genreName) {
-        return await this.filmModel.find({ genre: genreName });
+    async findByFilmName(filmName) {
+        return await this.filmModel.findOne({ title: filmName });
+    }
+    async findFilms(options) {
+        if (options) {
+            if (options.filmsCount) {
+                return await this.filmModel.aggregate([
+                    { $sort: { postDate: -1 } },
+                    { $limit: options.filmsCount }
+                ]);
+            }
+        }
+        return await this.filmModel.find().sort({ postDate: -1 });
     }
 };
 FilmService = __decorate([

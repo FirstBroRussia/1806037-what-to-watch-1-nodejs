@@ -42,15 +42,14 @@ export default class ImportCommand implements CLICommandInterface {
 		//  ЗДЕСЬ НАДО СДЕЛАТЬ СОЗДАНИЕ СУЩНОСТИ ЖАНРОВ
 		//  И ИХ ДОБАВИТЬ В ОБЪЕКТ С ФИЛЬМОМ
 
+	    const createGenreDTO: CreateGenreDTO = {
+			name: film.genre,
+		};
+		const genre = await this.genreService.findByGenreNameOrCreateGenre(createGenreDTO);
 		const filmResult = await this.filmService.create(film);
 
-		const createGenreDTO: CreateGenreDTO = {
-			name: filmResult.genre,
-		};
-
-		await this.genreService.findByGenreNameAndUpdateFilmsIdOrCreateGenre(filmResult.genre, createGenreDTO, filmResult._id);
-
-		// console.log(`New genre created and update filmsID array`);
+		await genre.filmsList.push(filmResult);
+		await genre.save();
 	}
 
 	private async onLine(line: string, resolve: () => void) {
@@ -62,15 +61,14 @@ export default class ImportCommand implements CLICommandInterface {
 	}
 
 	private async onComplete(count: number) {
-		console.log(`${count} rows imported.`);
+		this.logger.info(`${count} rows imported.`);
 
-		// const result = await this.filmService.findByGenreName('documentary');
-		// console.log(result);
+		// const array = await this.genreService.find({}, {populate: true, path: 'filmsList', model: 'FilmEntity'});
+		// console.log(array);
 
 		await this.databaseService.disconnect();
 	}
 
-	// filename: string, login: string, password: string, host: string, dbname: string, salt: string
 	public async execute(...parameters: string[]): Promise<void> {
 		const [filename, login, password, host, dbname] = parameters;
 		
@@ -78,7 +76,7 @@ export default class ImportCommand implements CLICommandInterface {
 		// this.salt = salt; // ИСПРАВИТЬ!!!
 
 		await this.databaseService.connect(uri);
-		
+
 		const fileReader = new TSVFileReader(filename.trim());
 		fileReader.on('line', this.onLine);
 		fileReader.on('end', this.onComplete);

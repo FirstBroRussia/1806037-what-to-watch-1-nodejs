@@ -27,7 +27,24 @@ export default class FilmService implements FilmServiceInterface {
         return await this.filmModel.findById(filmId).exec();
     }
 
-    public async findByGenreName(genreName: string): Promise<DocumentType<FilmEntity>[] | null> {
-        return await this.filmModel.find({genre: genreName});
+    public async findByFilmName(filmName: string): Promise<DocumentType<FilmEntity>[] | null> {
+        return await this.filmModel.findOne({title: filmName});
     }
+
+    public async findFilms(options?: any): Promise<DocumentType<FilmEntity>[] | null> {
+        if (options) {
+            if (options.filmsCount) {
+                return await this.filmModel.aggregate([
+                    { $sort: {postDate: -1} },
+                    { $limit: options.filmsCount }
+                ]);
+            }
+        }
+
+        return await this.filmModel.find().sort({postDate: -1});
+    }
+
+    // public async find(objectRequest: any, options?: any): Promise<DocumentType<FilmEntity>[] | null> {
+    //     return await this.filmModel.find(ob)
+    // }
 }

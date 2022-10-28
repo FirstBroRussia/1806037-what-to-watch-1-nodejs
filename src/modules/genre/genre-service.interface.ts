@@ -7,9 +7,8 @@ export interface GenreServiceInterface {
     create(genreDTO: CreateGenreDTO): Promise<DocumentType<GenreEntity>>;
     findByGenreId(genreId: string): Promise<DocumentType<GenreEntity> | null>;
     findByGenreName(genreName: string): Promise<DocumentType<GenreEntity> | null>;
-    findByGenreNameOrCreate(genreName: string, genreDTO: CreateGenreDTO): Promise<DocumentType<GenreEntity>>;
-    find(): Promise<Promise<DocumentType<GenreEntity>>[]>;
-
-
-    findByGenreNameAndUpdateFilmsIdOrCreateGenre(genreName: string, genreDTO: CreateGenreDTO, filmId: any): Promise<DocumentType<GenreEntity> | null>;
+    findByGenreNameOrCreateGenre(genreDTO: CreateGenreDTO): Promise<DocumentType<GenreEntity>>;
+    find(objectRequest: any, options?: any): Promise<Promise<DocumentType<GenreEntity>>[]>;
+    
+    findByGenreNameAndDeleteFilmFromFilmsList(genreName: string, filmId: any): Promise<void | null>;
 }

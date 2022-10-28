@@ -1,6 +1,7 @@
 import typegoose, {getModelForClass, Ref} from '@typegoose/typegoose';
 import { Base, TimeStamps } from "@typegoose/typegoose/lib/defaultClasses.js";
 import { GenreType } from '../../types/genre.type.js';
+import { FilmEntity } from '../film/film.entity.js';
 
 const {prop, modelOptions} = typegoose;
 
@@ -24,7 +25,7 @@ export class GenreEntity extends TimeStamps {
         required: true,
         ref: GenreEntity,
     })
-    public filmsId!: Ref<GenreEntity>[];
+    public filmsList!: Ref<FilmEntity>[];
 
     constructor(genre: string) {
         super();

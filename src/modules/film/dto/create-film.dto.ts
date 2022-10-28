@@ -3,7 +3,7 @@ import { GenreType } from "../../../types/genre.type.js";
 export default class CreateFilmDTO {
     public title!: string;
 	public description!: string;
-	public postData!: Date;
+	public postDate!: Date;
 	public genre!: GenreType;
 	public releaseYear!: number; 
 	public rating!: number;

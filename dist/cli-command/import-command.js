@@ -22,12 +22,13 @@ export default class ImportCommand {
     async saveFilmToDatabase(film) {
         //  ЗДЕСЬ НАДО СДЕЛАТЬ СОЗДАНИЕ СУЩНОСТИ ЖАНРОВ
         //  И ИХ ДОБАВИТЬ В ОБЪЕКТ С ФИЛЬМОМ
-        const filmResult = await this.filmService.create(film);
         const createGenreDTO = {
-            name: filmResult.genre,
+            name: film.genre,
         };
-        await this.genreService.findByGenreNameAndUpdateFilmsIdOrCreateGenre(filmResult.genre, createGenreDTO, filmResult._id);
-        // console.log(`New genre created and update filmsID array`);
+        const genre = await this.genreService.findByGenreNameOrCreateGenre(createGenreDTO);
+        const filmResult = await this.filmService.create(film);
+        await genre.filmsList.push(filmResult);
+        await genre.save();
     }
     async onLine(line, resolve) {
         const film = createFilmItem(line);
@@ -35,12 +36,11 @@ export default class ImportCommand {
         resolve();
     }
     async onComplete(count) {
-        console.log(`${count} rows imported.`);
-        // const result = await this.filmService.findByGenreName('documentary');
-        // console.log(result);
+        this.logger.info(`${count} rows imported.`);
+        // const array = await this.genreService.find({}, {populate: true, path: 'filmsList', model: 'FilmEntity'});
+        // console.log(array);
         await this.databaseService.disconnect();
     }
-    // filename: string, login: string, password: string, host: string, dbname: string, salt: string
     async execute(...parameters) {
         const [filename, login, password, host, dbname] = parameters;
         const uri = getURI(login, password, host, DEFAULT_DB_PORT, dbname);

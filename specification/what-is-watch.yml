@@ -14,7 +14,22 @@ tags:
   - name: user
     description: Действия с пользователем.
 paths:
-  /films/:
+  /films:
+    get:
+      tags:
+        - "film"
+      summary: Получение списка фильмов
+      description: Сервис предоставляет возможность получить список фильмов не более чем из 60 штук, если указан параметр {сount}, тогда получаем список с указанными количеством в параметре. Список отсортирован по дате публикации (по убыванию) Ресурс доступен любому пользователю.
+      operationId: getFilms
+      responses:
+        '200':
+          description: Массив из объектов фильмов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FilmInfo'
     post:
       tags:
         - "film"
@@ -79,7 +94,7 @@ paths:
         - name: genre
           in: path
           description: Жанр запрашиваемых фильмов
-          required: true
+          required: false
           schema:
             type: string
             example: thriller
@@ -246,7 +261,7 @@ paths:
           description: Фильм не найден
           content: {}
 
-  /comment[/:{filmId}]:
+  /comments[/:{filmId}]:
     get:
       tags:
         - "comment"

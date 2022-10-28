@@ -12,10 +12,10 @@ let FilmEntity = class FilmEntity extends TimeStamps {
     // public userId!: Ref<UserEntity>;
     constructor(data) {
         super();
-        const { title, description, postData, genre, releaseYear, rating, previewVideo, video, actors, director, duration, commentsCount, userUrl, poster, backgroundImage, backgroundColor } = data;
+        const { title, description, postDate, genre, releaseYear, rating, previewVideo, video, actors, director, duration, commentsCount, userUrl, poster, backgroundImage, backgroundColor } = data;
         this.title = title;
         this.description = description;
-        this.postData = postData;
+        this.postDate = postDate;
         this.genre = genre;
         this.releaseYear = releaseYear;
         this.rating = rating;
@@ -42,7 +42,7 @@ __decorate([
 __decorate([
     prop({ required: true }),
     __metadata("design:type", Date)
-], FilmEntity.prototype, "postData", void 0);
+], FilmEntity.prototype, "postDate", void 0);
 __decorate([
     prop({
         required: true,

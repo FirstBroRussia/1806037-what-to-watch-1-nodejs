@@ -1,3 +1,52 @@
-GET http://localhost:3123/api HTTP/1.1
+GET http://localhost:8000/films HTTP/1.1
+
+###
+
+POST http://localhost:8000/films HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "111111 стульев",
+    "description": "Фильм про космос.",
+    "postDate": "2022-01-01T21:00:00.000Z",
+    "genre": "thriller",
+    "releaseYear": 2020,
+    "rating": 9,
+    "previewVideo": "previewVideoLink",
+    "video": "videoLink",
+    "actors": [
+      "Пацаны с района"
+    ],
+    "director": [
+      "Джони Кардано"
+    ],
+    "duration": 90,
+    "commentsCount": 8,
+    "userUrl": "userLink",
+    "poster": "poster",
+    "backgroundImage": "backgroundImage",
+    "backgroundColor": "backgroundColor"
+}
+
+###
+POST http://localhost:8000/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Vasiliy",
+  "email": "aaa@aaa.ru",
+  "password": "12345"
+}
+
+###
+
+POST http://localhost:8080/ HTTP/1.1
+Content-Type: multipart/form-data
+
+{
+  "name": "Vasiliy",
+  "email": "aaa@aaa.ru",
+  "password": "12345"
+}
 
 ###

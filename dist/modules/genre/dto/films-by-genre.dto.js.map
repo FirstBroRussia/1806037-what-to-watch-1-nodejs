@@ -1,0 +1,1 @@
+{"version":3,"file":"films-by-genre.dto.js","sourceRoot":"","sources":["../../../../src/modules/genre/dto/films-by-genre.dto.ts"],"names":[],"mappings":"AAQA,MAAM,CAAC,MAAM,eAAe,GAAG,CAAC,WAAgB,EAAmB,EAAE;IACjE,OAAO;QACH,EAAE,EAAE,WAAW,CAAC,GAAG;QACnB,IAAI,EAAE,WAAW,CAAC,IAAI;QACtB,SAAS,EAAE,WAAW,CAAC,SAAS;KACnC,CAAA;AACL,CAAC,CAAC"}

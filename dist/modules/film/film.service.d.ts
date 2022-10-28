@@ -11,5 +11,6 @@ export default class FilmService implements FilmServiceInterface {
     constructor(logger: LoggerInterface, filmModel: ModelType<FilmEntity>);
     create(dto: createFilmDto): Promise<DocumentType<FilmEntity>>;
     findById(filmId: string): Promise<DocumentType<FilmEntity> | null>;
-    findByGenreName(genreName: string): Promise<DocumentType<FilmEntity>[] | null>;
+    findByFilmName(filmName: string): Promise<DocumentType<FilmEntity>[] | null>;
+    findFilms(options?: any): Promise<DocumentType<FilmEntity>[] | null>;
 }

@@ -5,8 +5,13 @@ import { Container } from "inversify";
 import Application from "./app/application.js";
 import { ConfigInterface } from "./common/config/config.interface.js";
 import ConfigService from "./common/config/config.service.js";
+import { ControllerInterface } from "./common/controllers/controller.interface.js";
+import FilmController from "./common/controllers/film-controller/film.controller.js";
+import UserController from "./common/controllers/user-controller/user.controller.js";
 import { DatabaseInterface } from "./common/database-client/database.interface.js";
 import DatabaseService from "./common/database-client/database.service.js";
+import { ExceptionFilterInterface } from "./common/errors/exception-filter.interface.js";
+import ExceptionFilter from "./common/errors/exception-filter.js";
 import { LoggerInterface } from "./common/logger/logger.interface.js";
 import LoggerService from "./common/logger/logger.service.js";
 import { FilmServiceInterface } from "./modules/film/film-service.interface.js";
@@ -31,6 +36,9 @@ applicationContainer.bind<ModelType<GenreEntity>>(Component.GenreModel).toConsta
 applicationContainer.bind<GenreServiceInterface>(Component.GenreServiceInterface).to(GenreService).inSingletonScope();
 applicationContainer.bind<FilmServiceInterface>(Component.FilmServiceInterface).to(FilmService).inSingletonScope();
 applicationContainer.bind<ModelType<FilmEntity>>(Component.FilmModel).toConstantValue(FilmModel);
+applicationContainer.bind<ControllerInterface>(Component.FilmController).to(FilmController).inSingletonScope();
+applicationContainer.bind<ControllerInterface>(Component.UserController).to(UserController).inSingletonScope();
+applicationContainer.bind<ExceptionFilterInterface>(Component.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();

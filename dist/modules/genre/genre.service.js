@@ -15,21 +15,35 @@ let GenreService = class GenreService {
         return this.genreModel.findById(genreId).exec();
     }
     async findByGenreName(genreName) {
-        return this.genreModel.findOne({ name: genreName }).exec();
+        return this.genreModel.findOne({ name: genreName });
     }
-    async findByGenreNameOrCreate(genreName, genreDTO) {
+    async findByGenreNameOrCreateGenre(genreDTO) {
+        const genreName = genreDTO.name;
         const existedGenre = await this.findByGenreName(genreName);
         if (existedGenre) {
             return existedGenre;
         }
         return this.create(genreDTO);
     }
-    async find() {
-        return await this.genreModel.find();
+    async find(objectRequest, options) {
+        if (options) {
+            if (options.populate) {
+                const { path, model } = options;
+                // return await this.genreModel.find(objectRequest).populate({
+                //     path: path, 
+                //     model: model ?? '',
+                // });
+                return await this.genreModel.find(objectRequest).populate({
+                    path: path,
+                    model: model ?? '',
+                });
+            }
+        }
+        return await this.genreModel.find(objectRequest);
     }
-    async findByGenreNameAndUpdateFilmsIdOrCreateGenre(genreName, genreDTO, filmId) {
-        const genre = await this.findByGenreNameOrCreate(genreName, genreDTO);
-        const result = await this.genreModel.findOneAndUpdate({ name: genreName }, { filmsId: [...genre.filmsId, filmId] }, { new: true }).exec();
+    async findByGenreNameAndDeleteFilmFromFilmsList(genreName, filmId) {
+        const genre = await this.findByGenreName(genreName);
+        const result = await genre?.deleteOne({ _id: filmId });
         return result;
     }
 };

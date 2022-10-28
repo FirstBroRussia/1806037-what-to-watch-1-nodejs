@@ -3,7 +3,7 @@ import { GenreType } from "./genre.type.js";
 export type Film = {
 	title: string,
 	description: string,
-	postData: Date,
+	postDate: Date,
 	genre: GenreType,
 	releaseYear: number,   // МОЖЕТ БЫТЬ ТИП Date
 	rating: number,

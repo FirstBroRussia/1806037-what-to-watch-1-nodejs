@@ -7,7 +7,7 @@ export interface FilmEntity extends Base {
 export declare class FilmEntity extends TimeStamps implements Film {
     title: string;
     description: string;
-    postData: Date;
+    postDate: Date;
     genre: GenreType;
     releaseYear: number;
     rating: number;
