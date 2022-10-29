@@ -1,4 +1,4 @@
-import { Film } from "../../../types/film.type.js";
+import { Film } from "../../../types/film.interface.js";
 
 export type FilmsByGenreDTO = {
     id: string;

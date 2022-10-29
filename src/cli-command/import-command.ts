@@ -10,7 +10,7 @@ import CreateGenreDTO from '../modules/genre/dto/create-genre.dto.js';
 import { GenreServiceInterface } from '../modules/genre/genre-service.interface.js';
 import { GenreModel } from '../modules/genre/genre.entity.js';
 import GenreService from '../modules/genre/genre.service.js';
-import { Film } from '../types/film.type.js';
+import { Film } from '../types/film.interface.js';
 import { createFilmItem, getErrorMessage } from '../utils/common.js';
 import { getURI } from '../utils/db.js';
 import {CLICommandInterface} from './cli-command.interface.js';

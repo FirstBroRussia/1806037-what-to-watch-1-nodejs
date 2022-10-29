@@ -10,6 +10,7 @@ import { ConfigInterface } from "../../config/config.interface.js";
 import CreateUserDTO from "../../../modules/user/dto/create-user.dto.js";
 import HttpError from "../../errors/http-error.js";
 import { userShortInfoDTO } from "../../../modules/user/dto/user-short-info.dto.js";
+import LoginUserDTO from "../../../modules/user/dto/login-user.dto.js";
 
 @injectable()
 export default class UserController extends Controller {
@@ -22,6 +23,7 @@ export default class UserController extends Controller {
         this.logger.info('Register routes for UserController...');
 
         this.addRoute({path: '/register', method: HttpMethod.Post, handler: this.create});
+        this.addRoute({path: '/login', method: HttpMethod.Post, handler: this.login});
     }
 
     public async create(req: Request<Record<string, unknown>, Record<string, unknown>, CreateUserDTO>, res: Response, _next: NextFunction): Promise<void> {
@@ -39,10 +41,33 @@ export default class UserController extends Controller {
         const salt = this.configService.get('SALT');
         const result = await this.userService.create(newUser, salt);
         
-        this.send(
+        this.created(
             res,
-            StatusCodes.CREATED,
             userShortInfoDTO(result),
         );
+    };
+
+    public async login(req: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDTO>, _res: Response, _next: NextFunction): Promise<void> {
+        const loginData = req.body;
+
+        const existsUser = await this.userService.findByEmail(loginData.email);
+
+        console.log(existsUser);
+
+        if (!existsUser) {
+            throw new HttpError(
+                StatusCodes.UNAUTHORIZED,
+                `User with email ${loginData.email} not found`,
+                'UserController'
+            );
+        }
+
+        // ЗАГЛУШКА !!!
+        throw new HttpError(
+            StatusCodes.NOT_IMPLEMENTED,
+            'Not implemented',
+            'UserController'
+        );
+
     };
 }

@@ -1,6 +1,6 @@
 import { GenreType } from "./genre.type.js";
 
-export type Film = {
+export interface Film {
 	title: string,
 	description: string,
 	postDate: Date,

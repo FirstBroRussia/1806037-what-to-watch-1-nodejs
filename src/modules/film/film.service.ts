@@ -8,6 +8,7 @@ import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import createFilmDto from './dto/create-film.dto.js';
 import { FilmEntity } from './film.entity.js';
 import { ModelType } from '@typegoose/typegoose/lib/types.js';
+import { Film } from '../../types/film.interface.js';
 
 @injectable()
 export default class FilmService implements FilmServiceInterface {
@@ -44,7 +45,13 @@ export default class FilmService implements FilmServiceInterface {
         return await this.filmModel.find().sort({postDate: -1});
     }
 
-    // public async find(objectRequest: any, options?: any): Promise<DocumentType<FilmEntity>[] | null> {
-    //     return await this.filmModel.find(ob)
-    // }
+    public async updateFilmById(filmId: string, updatedFilmObj: Film): Promise<DocumentType<FilmEntity> | null> {
+        const result = await this.filmModel.findByIdAndUpdate(filmId, updatedFilmObj, {new: true});
+
+        return result;
+    }
+
+    public async deleteFilmById(filmId: string): Promise<DocumentType<FilmEntity> | null> {
+        return await this.filmModel.findByIdAndDelete(filmId);
+    }
 }

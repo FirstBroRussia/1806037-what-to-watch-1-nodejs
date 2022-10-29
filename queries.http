@@ -1,12 +1,20 @@
+
+// Получение списка фильмов
 GET http://localhost:8000/films HTTP/1.1
 
 ###
 
+// Получение списка фильмов  по жанру
+GET http://localhost:8000/films?genre=documentary HTTP/1.1
+
+###
+
+// Добавление фильма
 POST http://localhost:8000/films HTTP/1.1
 Content-Type: application/json
 
 {
-    "title": "111111 стульев",
+    "title": "1221s111 стульев",
     "description": "Фильм про космос.",
     "postDate": "2022-01-01T21:00:00.000Z",
     "genre": "thriller",
@@ -29,6 +37,50 @@ Content-Type: application/json
 }
 
 ###
+
+// Получение фильма по идентификатору
+GET http://localhost:8000/films/635c4bf3b9f7d3f43b2c9285 HTTP/1.1
+Content-Type: application/json
+
+###
+
+// Редактирование фильма по идентификатору
+PUT  http://localhost:8000/films/635c4bf3b9f7d3f43b2c9285 HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "ЖОПА ЖОП",
+    "description": "Фильм про космос.",
+    "postDate": "2022-01-01T21:00:00.000Z",
+    "genre": "thriller",
+    "releaseYear": 2020,
+    "rating": 9,
+    "previewVideo": "previewVideoLink",
+    "video": "videoLink",
+    "actors": [
+      "Пацаны с района"
+    ],
+    "director": [
+      "Джони Кардано"
+    ],
+    "duration": 90,
+    "commentsCount": 8,
+    "userUrl": "userLink",
+    "poster": "poster",
+    "backgroundImage": "backgroundImage",
+    "backgroundColor": "backgroundColor"
+}
+
+###
+
+// Удаление фильма по идентификатору
+DELETE http://localhost:8000/films/635c4bf3b9f7d3f43b2c9285 HTTP/1.1
+Content-Type: application/json
+
+###
+
+
+// Регистрация пользователя
 POST http://localhost:8000/register HTTP/1.1
 Content-Type: application/json
 
@@ -40,11 +92,11 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/ HTTP/1.1
-Content-Type: multipart/form-data
+// Авторизация пользователя
+POST http://localhost:8000/login HTTP/1.1
+Content-Type: application/json
 
 {
-  "name": "Vasiliy",
   "email": "aaa@aaa.ru",
   "password": "12345"
 }

@@ -129,11 +129,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/Film'
   /films[/:{filmId}]:
+    get:
+      tags:
+        - "film"
+      summary: Получение полной информации по фильму с идентификатором {filmId}
+      description: Сервис предоставляет возможность получить полную информацию по фильму с идентификатором {filmId}. Ресурс доступен любым пользователем.
+      operationId: getFilmById
+      parameters:
+        - name: filmId
+          in: path
+          description: Уникальный идентификатор фильма
+          required: true
+          schema:
+            $ref: '#/components/schemas/FilmId'
+      responses:
+        '200':
+          description: Объект с промо фильмом
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Film'
+        "404":
+          description: Фильм не найден
+          content: {}
     put:
       tags:
         - "film"
       summary: Редактирование фильма с идентификатором {filmId}
-
       description: Сервис предоставляет возможность редактировать существующий фильм с идентификатором {filmId}. Ресурс доступен только авторизованным пользователем.
       operationId: updateFilmById
       parameters:

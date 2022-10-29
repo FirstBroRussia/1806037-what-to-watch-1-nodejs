@@ -7,7 +7,7 @@ import { Component } from "../../../types/component.types.js";
 import { HttpMethod } from "../../../types/http-method.enum.js";
 import { GenreServiceInterface } from "../../../modules/genre/genre-service.interface.js";
 import { FilmServiceInterface } from "../../../modules/film/film-service.interface.js";
-import { Film } from "../../../types/film.type.js";
+import { Film } from "../../../types/film.interface.js";
 import { desSortArrayByTime } from "../../../utils/common.js";
 import { filmsByGenreDTO } from "../../../modules/genre/dto/films-by-genre.dto.js";
 import { filmShortInfoDTO } from "../../../modules/film/dto/film-short-info.dto.js";
@@ -46,6 +46,9 @@ export default class FilmController extends Controller {
         this.addRoute({path: '/?count=:count', method: HttpMethod.Get, handler: this.index});
         this.addRoute({path: '/?genre=:genre&&count=:count', method: HttpMethod.Get, handler: this.index});
         this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
+        this.addRoute({path: '/:filmId', method: HttpMethod.Get, handler: this.get});
+        this.addRoute({path: '/:filmId', method: HttpMethod.Put, handler: this.update});
+        this.addRoute({path: '/:filmId', method: HttpMethod.Delete, handler: this.delete});
     }
 
     public async index(req: Request, res: Response): Promise<void> {
@@ -62,7 +65,7 @@ export default class FilmController extends Controller {
                 return filmShortInfoDTO(item);
             });
 
-            this.send(res, StatusCodes.OK, convertFilms);
+            this.ok(res, convertFilms);
 
             return;
         }
@@ -71,7 +74,6 @@ export default class FilmController extends Controller {
 
             const genre = String(req.query['genre']);
             const filmsByGenreObj = await this.genreService.find({ name: genre }, { populate: true, path: 'filmsList', model: 'FilmEntity' });
-            // const filmsByGenre = (await filmsByGenreObj[0]).filmsList as unknown as Film[];
             const filmsGenreDto = filmsByGenreDTO(filmsByGenreObj[0]);
             const desSortFilms = desSortArrayByTime<Film>(filmsGenreDto.filmsList, {targetSortField: 'postDate'});
             const films = desSortFilms.slice(0, DEFAULT_COUNT_FILM);
@@ -79,7 +81,7 @@ export default class FilmController extends Controller {
                 return filmShortInfoDTO(item);
             });
 
-            this.send(res, StatusCodes.OK, convertFilms);
+            this.ok(res, convertFilms);
 
             return;
         } 
@@ -92,18 +94,18 @@ export default class FilmController extends Controller {
                 return filmShortInfoDTO(item);
             });
 
-            this.send(res, StatusCodes.OK, convertFilms);
+            this.ok(res, convertFilms);
 
             return;
         } else {
             // Получение всех фильмов
 
             const films = await this.filmService.findFilms({filmsCount: DEFAULT_COUNT_FILM});
-            // const convertFilms = films?.map((item) => {
-            //     return filmShortInfoDTO(item);
-            // });
+            const convertFilms = films?.map((item) => {
+                return filmShortInfoDTO(item);
+            });
 
-            this.send(res, StatusCodes.OK, films);
+            this.ok(res, convertFilms);
         }
     }
 
@@ -128,7 +130,74 @@ export default class FilmController extends Controller {
 		await genre.filmsList.push(filmResult);
 		await genre.save();
 
-        this.send(res, StatusCodes.CREATED, filmFullInfoDTO(filmResult));
+        this.created(res, filmFullInfoDTO(filmResult));
+    }
+
+    public async get(req: Request, res: Response): Promise<void> {
+        const filmId = String(req.params['filmId']);
+        const result = await this.filmService.findById(filmId);
+
+        this.ok(res, filmFullInfoDTO(result));
+    }
+
+    public async update(req: Request<Record<string, unknown>, Record<string, unknown>, CreateFilmDTO>, res: Response): Promise<void> {
+        const filmId = String(req.params['filmId']);
+        const updatesfilmObj: Film = req.body;
+
+        const oldFilmData = await this.filmService.findById(filmId);
+
+        const oldGenreFilm = String(oldFilmData?.genre);
+        const updateGenreFilm = updatesfilmObj.genre;
+
+        if (oldGenreFilm === updateGenreFilm) {
+            const newFilmData = await this.filmService.updateFilmById(filmId, updatesfilmObj);
+
+            this.created(res, filmFullInfoDTO(newFilmData));
+
+            return;
+        }
+
+        const resultDeleteFilmInOldGenreCollection = await this.genreService.findGenreByNameAndDeleteFilmFromCurrentGenre(oldGenreFilm, filmId);
+        
+        if (!resultDeleteFilmInOldGenreCollection) {
+            throw new HttpError(
+                StatusCodes.CONFLICT,
+                `There is no film with such ID: ${filmId} in this genre ${oldGenreFilm}, please inform the administrator about it.`,
+                'FilmController'
+            );
+        }
+
+        const updateFilmData = await this.filmService.updateFilmById(filmId, updatesfilmObj);
+
+        await this.genreService.findGenreByNameAndUpdateFilmsListFromCurrentGenre(updateGenreFilm, updateFilmData?._id);
+
+        this.created(res, filmFullInfoDTO(updateFilmData));
+    }
+
+    public async delete(req: Request, res: Response): Promise<void> {
+        const filmId = String(req.params['filmId']);
+        const resultFilmData = await this.filmService.deleteFilmById(filmId) as unknown as Film;
+
+        if (!resultFilmData) {
+            throw new HttpError(
+                StatusCodes.CONFLICT,
+                `Film with ID: ${filmId} does not exist.`,
+                'FilmController'
+            );
+        }
+
+        const genreName = resultFilmData.genre;
+        const result = await this.genreService.findGenreByNameAndDeleteFilmFromCurrentGenre(genreName, filmId);
+
+        if (!result) {
+            throw new HttpError(
+                StatusCodes.CONFLICT,
+                `There is no film with such ID: ${filmId} in this genre ${genreName}, please inform the administrator about it.`,
+                'FilmController => GenreService'
+            );
+        }
+
+        this.ok(res, {});
     }
 
 }

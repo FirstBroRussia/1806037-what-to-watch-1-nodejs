@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import crypto from 'crypto';
-import { Film } from '../types/film.type.js';
+import { Film } from '../types/film.interface.js';
 import { GenreType } from '../types/genre.type.js';
+import { ClassConstructor, plainToInstance } from 'class-transformer';
 
 export const createFilmItem = (row: string): Film => {
 	const tokens = row.replace('\n', ' ').replace('\r', '').split('\t');
@@ -56,6 +57,9 @@ export const createSHA256 = (line: string, salt: string): string => {
   
   return shaHasher.update(line).digest('hex');
 };
+
+export const fillDTO = <T, V>(someDTO: ClassConstructor<T>, plainObject: V) =>
+  plainToInstance(someDTO, plainObject, {excludeExtraneousValues: true}); 
 
 export const createErrorObject = (message: string) => ({
 	error: message,

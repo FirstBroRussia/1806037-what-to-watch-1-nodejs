@@ -1,6 +1,6 @@
 import typegoose, {getModelForClass} from '@typegoose/typegoose';
 import { Base, TimeStamps } from "@typegoose/typegoose/lib/defaultClasses.js";
-import { Film } from "../../types/film.type.js";
+import { Film } from "../../types/film.interface.js";
 import { GenreType } from '../../types/genre.type.js';
 // import { UserEntity } from '../user/user.entity.js';
 
